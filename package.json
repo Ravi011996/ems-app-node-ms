@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/server.ts",
-    "dev": " npx tsc && nodemon ./src/server.ts"
+    "dev": " npx tsc && nodemon ./src/server.ts",
+    "test": "jest",
+    "coverage" : "jest --coverage"
   },
   "keywords": [],
   "author": "",
