@@ -4,6 +4,7 @@ import connectDB from './config/db';
 import authRoutes from './routes/authRoutes';
 import expenseRoutes from "./routes/expenseRoutes";
 import globalErrorHandler from "./middlewares/errorHandlerMiddleware";
+import { setupSwagger } from './swagger';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 
 // Connect Database
 connectDB();
+
+setupSwagger(app);
 
 // Routes
 app.use('/api/auth', authRoutes);
