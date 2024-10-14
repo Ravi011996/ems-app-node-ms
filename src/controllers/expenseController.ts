@@ -55,7 +55,7 @@ export const updateExpense = async (
 
     // Ensure the expense belongs to the authenticated user
     if (expense.userId !== userId) {
-      res.status(403).json({ message: "Unauthorized" });
+     return res.status(403).json({ message: "Unauthorized" });
     }
 
     expense.title = title || expense.title;
@@ -64,9 +64,11 @@ export const updateExpense = async (
     expense.date = date || expense.date;
 
     const updatedExpense = await expense.save();
-    res.status(200).json(updatedExpense);
+    return res.status(200).json(updatedExpense);
   } catch (err) {
-    res.status(500).json({ message: "Server Error" });
+    console.log("::::::::::::::::::::::err :", err);
+    
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -90,8 +92,8 @@ export const deleteExpense = async (
     }
 
     await expense.deleteOne();
-    res.status(200).json({ message: "Expense deleted" });
+    return res.status(200).json({ message: "Expense deleted" });
   } catch (err) {
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
