@@ -17,7 +17,7 @@ export const authenticate = (
       userId: string;
     };
 
-    req.body.userId = decoded.userId; // Attach user ID to request object
+    req.body.userId = decoded.userId;
     next();
   } catch (err) {
     res.status(401).json({ message: "Token is not valid" });

@@ -1,56 +1,48 @@
 import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import UserModel from "../models/User";
+import { AuthService } from "../services/index";
+import { HTTP_STATUS_CODES, SUCCESS_MESSAGES } from "../constants";
+import { sendResponse } from "../utils/responseUtil";
 
-export const register = async (req: Request, res: Response): Promise<any> => {
-  const { username, password, email } = req.body;
+class AuthController {
+  public async register(req: Request, res: Response): Promise<any> {
+    const { username, password, email } = req.body;
 
-  try {
-    const existingUser = await UserModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+    try {
+      const userData = await AuthService.register(username, email, password);
+      return sendResponse(
+        res,
+        HTTP_STATUS_CODES.CREATED,
+        SUCCESS_MESSAGES.CREATED,
+        userData
+      );
+    } catch (error) {
+      return sendResponse(
+        res,
+        HTTP_STATUS_CODES.BAD_REQUEST,
+        (error as Error).message
+      );
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new UserModel({ username, email, password: hashedPassword });
-    await user.save();
-
-    return res.status(201).json({
-      error: false,
-      message: "User registered successfully",
-      data: { email, password },
-    });
-  } catch (error) {
-    console.log("error ::", error);
-    return res.status(500).json({ message: "Server error" });
   }
-};
 
-export const login = async (req: Request, res: Response): Promise<any> => {
-  const { email, password } = req.body;
+  public async login(req: Request, res: Response): Promise<any> {
+    const { email, password } = req.body;
 
-  try {
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+    try {
+      const tokenData = await AuthService.login(email, password);
+      return sendResponse(
+        res,
+        HTTP_STATUS_CODES.OK,
+        SUCCESS_MESSAGES.LOGGED_IN,
+        tokenData
+      );
+    } catch (error) {
+      return sendResponse(
+        res,
+        HTTP_STATUS_CODES.UNAUTHORIZED,
+        (error as Error).message
+      );
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET as string,
-      {
-        expiresIn: "1h",
-      }
-    );
-
-    return res.status(200).json({ token });
-  } catch (error) {
-    return res.status(500).json({ message: "Server error" });
   }
-};
+}
+
+export default new AuthController();
