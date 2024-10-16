@@ -1,13 +1,13 @@
 import { AuthService } from "../services/index";
-import UserModel from "../models/User";
-import {ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants";
+import {UserModel} from "../models/index";
+import {ERROR_MESSAGES} from "../constants";
 import {
   hashPassword,
   comparePassword,
   generateToken,
-} from "../utils/authUtils";
+} from "../utils/index";
 
-jest.mock("../models/User");
+jest.mock("../models/auth");
 jest.mock("../utils/authUtils");
 
 describe("AuthService", () => {

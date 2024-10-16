@@ -1,8 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from './config/db';
-import authRoutes from './routes/authRoutes';
-import expenseRoutes from "./routes/expenseRoutes";
+import {authRoute,expenseRoute} from './routes/index';
 import globalErrorHandler from "./middlewares/errorHandlerMiddleware";
 import { setupSwagger } from './swagger';
 
@@ -16,8 +15,8 @@ connectDB();
 
 setupSwagger(app);
 
-app.use('/api/auth', authRoutes);
-app.use('/api', expenseRoutes);
+app.use('/api/auth', authRoute);
+app.use('/api', expenseRoute);
 
 app.get("/", (req, res) => {
   res.json({ error: false, msg: "success" });

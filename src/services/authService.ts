@@ -1,10 +1,10 @@
-import UserModel from "../models/User";
+import {UserModel} from "../models/index";
 import { ERROR_MESSAGES } from "../constants";
 import {
   hashPassword,
   comparePassword,
   generateToken,
-} from "../utils/authUtils";
+} from "../utils/index";
 
 class AuthService {
   public async register(username: string, email: string, password: string) {

@@ -1,5 +1,5 @@
 import {ExpenseService} from "../services/index";
-import { Expense } from "../models/expenseModel";
+import { Expense } from "../models/index";
 import {ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants";
 
 jest.mock("../models/expenseModel", () => ({

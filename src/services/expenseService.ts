@@ -1,4 +1,4 @@
-import { Expense } from "../models/expenseModel";
+import { Expense } from "../models/index";
 import { ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants";
 
 class ExpenseService {

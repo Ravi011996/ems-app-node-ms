@@ -1,8 +1,7 @@
 import express from "express";
-import ExpenseController from "../controllers/expenseController";
-import { authenticate } from "../middlewares/authMiddleware";
+import { ExpenseController } from "../controllers/index";
+import { authenticate,validateResult } from "../middlewares/index";
 import { expenseValidator } from "../validators/expenseValidator";
-import { validateResult } from "../middlewares/validateResult";
 
 const router = express.Router();
 
@@ -16,7 +15,7 @@ router.post(
   ExpenseController.createExpense
 );
 
-router.put("/expenses/:id", authenticate, ExpenseController.updateExpense); 
+router.put("/expenses/:id", authenticate, ExpenseController.updateExpense);
 
 router.delete("/expenses/:id", authenticate, ExpenseController.deleteExpense);
 
