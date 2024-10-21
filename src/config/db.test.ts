@@ -23,14 +23,13 @@ describe('connectDB', () => {
 
   it('should fail to connect to MongoDB and exit the process', async () => {
     const errorMessage = 'MongoDB connection error';
-    // Mock mongoose.connect to reject with an error
     (mongoose.connect as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
     try {
       await connectDB();
     } catch (error) {
       const err = error as Error;
-      expect(err.message).toEqual('process.exit: 1'); // Check for the process.exit call
+      expect(err.message).toEqual('process.exit: 1');
     }
 
     expect(mongoose.connect).toHaveBeenCalledTimes(1);

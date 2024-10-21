@@ -1,4 +1,3 @@
-// utils/jwtUtil.ts
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (token: string) => {
