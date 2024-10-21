@@ -1,5 +1,5 @@
-import { comparePassword, generateToken, hashPassword } from "./authUtils";
-import { sendResponse } from "./responseUtil";
+import { comparePassword, generateToken, hashPassword } from "./auth";
+import { sendResponse } from "./response";
 
 export {
     hashPassword,

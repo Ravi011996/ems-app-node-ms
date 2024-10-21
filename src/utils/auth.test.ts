@@ -1,4 +1,4 @@
-import { hashPassword, comparePassword, generateToken } from './authUtils';
+import { hashPassword, comparePassword, generateToken } from './auth';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
