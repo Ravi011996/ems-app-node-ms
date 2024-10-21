@@ -2,25 +2,12 @@ import { Request, Response } from 'express';
 import AuthController from '../controllers/authController';
 import { HTTP_STATUS_CODES, SUCCESS_MESSAGES } from '../constants/common';
 import { AuthService } from '../services/index';
-import {
-  mockExistingUser,
-  mockNewUser,
-  mockToken,
-  mockUserForLogin,
-  testUser,
-} from '../mocks/index';
+import { testUser } from '../mocks/index';
 
 jest.mock('../services/index');
 
 describe('AuthController', () => {
-  const {
-    hashedpassword,
-    user,
-    mail,
-    password,
-    nonexistentuser,
-    wrongpassword,
-  } = testUser;
+  const { user, mail, password, wrongpassword } = testUser;
   let req: Partial<Request>;
   let res: Partial<Response>;
 
@@ -37,7 +24,7 @@ describe('AuthController', () => {
   });
 
   describe('register', () => {
-    it('should register a new user and return 201 status', async () => {
+    it('should register a new user', async () => {
       const mockUserData = { email: mail, username: user };
       req.body = {
         username: user,
@@ -58,7 +45,7 @@ describe('AuthController', () => {
       });
     });
 
-    it('should return 400 if registration fails', async () => {
+    it('should registration fails', async () => {
       req.body = {
         username: user,
         password: password,
@@ -95,7 +82,7 @@ describe('AuthController', () => {
       });
     });
 
-    it('should return 401 if login fails', async () => {
+    it('should login fails', async () => {
       req.body = {
         email: mail,
         password: wrongpassword,
@@ -107,10 +94,7 @@ describe('AuthController', () => {
 
       await AuthController.login(req as Request, res as Response);
 
-      expect(AuthService.login).toHaveBeenCalledWith(
-        mail,
-        wrongpassword
-      );
+      expect(AuthService.login).toHaveBeenCalledWith(mail, wrongpassword);
       expect(res.status).toHaveBeenCalledWith(HTTP_STATUS_CODES.UNAUTHORIZED);
       expect(res.json).toHaveBeenCalledWith({
         error: true,

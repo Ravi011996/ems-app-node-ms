@@ -27,7 +27,7 @@ describe("ExpenseController", () => {
   });
 
   describe("getExpenses", () => {
-    it("should return expenses with status 200", async () => {
+    it("should return expenses", async () => {
       const mockExpenses = [{ title: "Expense 1", amount: 100 }];
       (ExpenseService.getExpenses as jest.Mock).mockResolvedValue(mockExpenses);
 
@@ -44,7 +44,7 @@ describe("ExpenseController", () => {
       );
     });
 
-    it("should return 500 if there is an error", async () => {
+    it("should return Server error", async () => {
       const mockError = new Error("Server error");
       (ExpenseService.getExpenses as jest.Mock).mockRejectedValue(mockError);
 
@@ -59,7 +59,7 @@ describe("ExpenseController", () => {
   });
 
   describe("createExpense", () => {
-    it("should create an expense and return status 201", async () => {
+    it("should create an expense", async () => {
       const mockExpense = { title: "New Expense", amount: 200 };
       (ExpenseService.createExpense as jest.Mock).mockResolvedValue(mockExpense);
 
@@ -76,7 +76,7 @@ describe("ExpenseController", () => {
       );
     });
 
-    it("should return 500 if there is an error", async () => {
+    it("should return Server error if error while create Expense", async () => {
       const mockError = new Error("Server error");
       (ExpenseService.createExpense as jest.Mock).mockRejectedValue(mockError);
 
@@ -91,7 +91,7 @@ describe("ExpenseController", () => {
   });
 
   describe("updateExpense", () => {
-    it("should update an expense and return status 200", async () => {
+    it("should update an expense", async () => {
       const mockUpdatedExpense = { title: "Updated Expense", amount: 150 };
       (ExpenseService.updateExpense as jest.Mock).mockResolvedValue(mockUpdatedExpense);
 
@@ -112,7 +112,7 @@ describe("ExpenseController", () => {
       );
     });
 
-    it("should return 500 if there is an error", async () => {
+    it("updateExpense: should return server error", async () => {
       const mockError = new Error("Server error");
       (ExpenseService.updateExpense as jest.Mock).mockRejectedValue(mockError);
 
@@ -129,7 +129,7 @@ describe("ExpenseController", () => {
   });
 
   describe("deleteExpense", () => {
-    it("should delete an expense and return status 200", async () => {
+    it("should delete an expense", async () => {
       const mockResult = { message: "Expense deleted" };
       (ExpenseService.deleteExpense as jest.Mock).mockResolvedValue(mockResult);
 
@@ -150,7 +150,7 @@ describe("ExpenseController", () => {
       );
     });
 
-    it("should return 500 if there is an error", async () => {
+    it("deleteExpense:should return server error", async () => {
       const mockError = new Error("Server error");
       (ExpenseService.deleteExpense as jest.Mock).mockRejectedValue(mockError);
 
