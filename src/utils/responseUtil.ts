@@ -1,5 +1,5 @@
 import { Response } from "express";
-import {IApiResponse } from '../types'
+import {IApiResponse } from '../types/common'
 
 export const sendResponse = (
     res: Response,

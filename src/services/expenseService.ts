@@ -1,6 +1,6 @@
 import { Expense } from "../models/index";
-import { ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants";
-import { IExpense } from "../types";
+import { ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants/common";
+import { IExpense } from "../types/common";
 
 
 class ExpenseService {

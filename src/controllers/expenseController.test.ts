@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import ExpenseController from "../controllers/expenseController";
 import { ExpenseService } from "../services";
-import { HTTP_STATUS_CODES, SUCCESS_MESSAGES} from "../constants";
+import { HTTP_STATUS_CODES, SUCCESS_MESSAGES} from "../constants/common";
 import { sendResponse } from "../utils/responseUtil";
 
 jest.mock("../services", () => ({

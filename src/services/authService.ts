@@ -1,5 +1,5 @@
 import { UserModel } from "../models/index";
-import { ERROR_MESSAGES } from "../constants";
+import { ERROR_MESSAGES } from "../constants/common";
 import { hashPassword, comparePassword, generateToken } from "../utils/index";
 
 class AuthService {

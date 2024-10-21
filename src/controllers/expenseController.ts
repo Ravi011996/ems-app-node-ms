@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpenseService } from "../services/index";
-import { HTTP_STATUS_CODES,SUCCESS_MESSAGES } from "../constants";
+import { HTTP_STATUS_CODES,SUCCESS_MESSAGES } from "../constants/common";
 import { sendResponse } from "../utils/responseUtil";
 
 class ExpenseController {

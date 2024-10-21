@@ -1,6 +1,6 @@
 import { AuthService } from "../services/index";
 import {UserModel} from "../models/index";
-import {ERROR_MESSAGES} from "../constants";
+import {ERROR_MESSAGES} from "../constants/common";
 import { mockExistingUser, mockNewUser, mockToken, mockUserForLogin,testUser} from "../mocks/index"
 
 import {

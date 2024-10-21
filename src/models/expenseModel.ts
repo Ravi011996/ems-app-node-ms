@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IExpense } from '../types';
+import { IExpense } from '../types/common';
 
 const ExpenseSchema: Schema = new Schema({
   title: { type: String, required: true },
