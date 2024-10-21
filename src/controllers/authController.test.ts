@@ -3,7 +3,7 @@ import AuthController from '../controllers/authController';
 import { HTTP_STATUS_CODES, SUCCESS_MESSAGES } from "../constants";
 import { AuthService } from '../services/index';
 
-jest.mock('../services/index'); // Mock the AuthService module
+jest.mock('../services/index');
 
 describe('AuthController', () => {
   let req: Partial<Request>;

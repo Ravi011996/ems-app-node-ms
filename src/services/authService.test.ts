@@ -23,14 +23,14 @@ describe("AuthService", () => {
 
       (UserModel as unknown as jest.Mock).mockImplementation(() => mockNewUser);
 
-      const result = await AuthService.register(
+      await AuthService.register(
         "testuser",
         "testuser@example.com",
         "password123"
       );
 
       expect(UserModel.findOne).toHaveBeenCalledWith({
-        email: "testuser@example.com",
+        $or: [{ email: 'testuser@example.com' }, { username: 'testuser' }],
       });
       expect(hashPassword).toHaveBeenCalledWith("password123");
       expect(mockNewUser.save).toHaveBeenCalled();
@@ -46,7 +46,7 @@ describe("AuthService", () => {
       ).rejects.toThrow(ERROR_MESSAGES.ALREADY_EXITS);
 
       expect(UserModel.findOne).toHaveBeenCalledWith({
-        email: mockExistingUser.email,
+        $or: [{ email: mockExistingUser.email }, { username: 'testuser' }],
       });
       expect(hashPassword).not.toHaveBeenCalled();
     });

@@ -1,14 +1,12 @@
-import {UserModel} from "../models/index";
+import { UserModel } from "../models/index";
 import { ERROR_MESSAGES } from "../constants";
-import {
-  hashPassword,
-  comparePassword,
-  generateToken,
-} from "../utils/index";
+import { hashPassword, comparePassword, generateToken } from "../utils/index";
 
 class AuthService {
   public async register(username: string, email: string, password: string) {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await UserModel.findOne({
+      $or: [{ email }, { username }],
+    });
     if (existingUser) {
       throw new Error(ERROR_MESSAGES.ALREADY_EXITS);
     }
