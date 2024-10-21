@@ -13,6 +13,6 @@ router.post(
   AuthController.register
 );
 
-router.post("/login", loginValidation, AuthController.login);
+router.post("/login", AuthController.login);
 
 export default router;

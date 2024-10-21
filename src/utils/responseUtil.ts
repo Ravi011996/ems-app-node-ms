@@ -5,7 +5,7 @@ export const sendResponse = (
     res: Response,
     statusCode: number,
     message: string,
-    data?: any
+    data?: Object
   ) => {
     const response: IApiResponse = {
       error: statusCode >= 400,

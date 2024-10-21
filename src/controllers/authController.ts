@@ -4,19 +4,19 @@ import { HTTP_STATUS_CODES, SUCCESS_MESSAGES } from "../constants";
 import { sendResponse } from "../utils/responseUtil";
 
 class AuthController {
-  public async register(req: Request, res: Response): Promise<any> {
+  public async register(req: Request, res: Response): Promise<void> {
     const { username, password, email } = req.body;
 
     try {
       const userData = await AuthService.register(username, email, password);
-      return sendResponse(
+       sendResponse(
         res,
         HTTP_STATUS_CODES.CREATED,
         SUCCESS_MESSAGES.CREATED,
         userData
       );
     } catch (error) {
-      return sendResponse(
+       sendResponse(
         res,
         HTTP_STATUS_CODES.BAD_REQUEST,
         (error as Error).message
@@ -24,19 +24,19 @@ class AuthController {
     }
   }
 
-  public async login(req: Request, res: Response): Promise<any> {
+  public async login(req: Request, res: Response): Promise<void> {
     const { email, password } = req.body;
 
     try {
       const tokenData = await AuthService.login(email, password);
-      return sendResponse(
+       sendResponse(
         res,
         HTTP_STATUS_CODES.OK,
         SUCCESS_MESSAGES.LOGGED_IN,
         tokenData
       );
     } catch (error) {
-      return sendResponse(
+      sendResponse(
         res,
         HTTP_STATUS_CODES.UNAUTHORIZED,
         (error as Error).message

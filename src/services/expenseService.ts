@@ -1,8 +1,10 @@
 import { Expense } from "../models/index";
 import { ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants";
+import { IExpense } from "../types";
+
 
 class ExpenseService {
-  public async getExpenses(userId: string): Promise<any> {
+  public async getExpenses(userId: string): Promise<IExpense[]> {
     try {
       const expenses = await Expense.find({ userId });
       return expenses;
@@ -11,7 +13,7 @@ class ExpenseService {
     }
   }
 
-  public async createExpense(data: any): Promise<any> {
+  public async createExpense(data: IExpense): Promise<IExpense> {
     try {
       const { title, amount, category, date, userId } = data;
       const newExpense = new Expense({
@@ -28,7 +30,7 @@ class ExpenseService {
     }
   }
 
-  public async updateExpense(id: string, data: any): Promise<any> {
+  public async updateExpense(id: string, data: any): Promise<IExpense> {
     try {
       const { title, amount, category, date, userId } = data;
       const expense = await Expense.findById(id);
@@ -53,7 +55,7 @@ class ExpenseService {
     }
   }
 
-  public async deleteExpense(id: string, userId: string): Promise<any> {
+  public async deleteExpense(id: string, userId: string):  Promise<{ message: string }> {
     try {
       const expense = await Expense.findById(id);
 

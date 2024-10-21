@@ -1,6 +1,7 @@
 import {ExpenseService} from "../services/index";
 import { Expense } from "../models/index";
 import {ERROR_MESSAGES,SUCCESS_MESSAGES } from "../constants";
+import { IExpense } from "../types";
 
 jest.mock("../models/expenseModel", () => ({
   Expense: {
@@ -13,6 +14,15 @@ jest.mock("../models/expenseModel", () => ({
 }));
 
 describe("ExpenseService", () => {
+
+  const mockUpdateData = {
+    title: "Updated Expense",
+    amount: 200,
+    category: "Food",
+    date: "2024-10-14",
+    userId: "testUserId",
+  };
+
   describe("getExpenses", () => {
     it("should return expenses for the given userId", async () => {
       const mockExpenses = [{ title: "Expense 1", amount: 100 }];
@@ -35,8 +45,14 @@ describe("ExpenseService", () => {
 
     it("should throw an error if there is a server error", async () => {
       (Expense.prototype.save as jest.Mock).mockRejectedValue(new Error("Database error"));
-
-      await expect(ExpenseService.createExpense({})).rejects.toThrow(ERROR_MESSAGES.SERVER_ERROR);
+      const sampleExpense: IExpense = {
+        title: "Grocery Shopping",
+        amount: 150.75,
+        category: "Food",
+        date: "2024-10-21",
+        userId: "testUserId123",
+    };
+      await expect(ExpenseService.createExpense(sampleExpense)).rejects.toThrow(ERROR_MESSAGES.SERVER_ERROR);
     });
   });
 
@@ -60,13 +76,7 @@ describe("ExpenseService", () => {
 
       (Expense.findById as jest.Mock).mockResolvedValue(mockExistingExpense);
 
-      const mockUpdateData = {
-        title: "Updated Expense",
-        amount: 200,
-        category: "Food",
-        date: "2024-10-14",
-        userId: "testUserId",
-      };
+    
 
       const result = await ExpenseService.updateExpense("testId", mockUpdateData);
 
@@ -84,7 +94,7 @@ describe("ExpenseService", () => {
     it("should throw an error if the expense is not found", async () => {
       (Expense.findById as jest.Mock).mockResolvedValue(null);
 
-      await expect(ExpenseService.updateExpense("nonExistentId", {})).rejects.toThrow(ERROR_MESSAGES.NOT_FOUND);
+      await expect(ExpenseService.updateExpense("nonExistentId", mockUpdateData)).rejects.toThrow(ERROR_MESSAGES.NOT_FOUND);
     });
 
     it("should throw an error if the user is unauthorized", async () => {
