@@ -1,7 +1,8 @@
 import { AuthService } from "../services/index";
 import {UserModel} from "../models/index";
 import {ERROR_MESSAGES} from "../constants";
-import { mockExistingUser, mockNewUser, mockToken, mockUserForLogin } from "../mocks/index"
+import { mockExistingUser, mockNewUser, mockToken, mockUserForLogin,testUser} from "../mocks/index"
+
 import {
   hashPassword,
   comparePassword,
@@ -12,6 +13,7 @@ jest.mock("../models/auth");
 jest.mock("../utils/authUtils");
 
 describe("AuthService", () => {
+  const {hashedpassword,user,mail,password,nonexistentuser,wrongpassword} = testUser;
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -19,20 +21,20 @@ describe("AuthService", () => {
   describe("register", () => {
     it("should register a new user", async () => {
       (UserModel.findOne as jest.Mock).mockResolvedValue(null);
-      (hashPassword as jest.Mock).mockResolvedValue("hashedpassword");
+      (hashPassword as jest.Mock).mockResolvedValue(hashedpassword);
 
       (UserModel as unknown as jest.Mock).mockImplementation(() => mockNewUser);
 
       await AuthService.register(
-        "testuser",
-        "testuser@example.com",
-        "password123"
+        user,
+        mail,
+        password
       );
 
       expect(UserModel.findOne).toHaveBeenCalledWith({
-        $or: [{ email: 'testuser@example.com' }, { username: 'testuser' }],
+        $or: [{ email: mail }, { username: user }],
       });
-      expect(hashPassword).toHaveBeenCalledWith("password123");
+      expect(hashPassword).toHaveBeenCalledWith(password);
       expect(mockNewUser.save).toHaveBeenCalled();
     });
 
@@ -42,11 +44,11 @@ describe("AuthService", () => {
       });
 
       await expect(
-        AuthService.register("testuser", mockExistingUser.email, "password")
+        AuthService.register(user, mockExistingUser.email, password)
       ).rejects.toThrow(ERROR_MESSAGES.ALREADY_EXITS);
 
       expect(UserModel.findOne).toHaveBeenCalledWith({
-        $or: [{ email: mockExistingUser.email }, { username: 'testuser' }],
+        $or: [{ email: mockExistingUser.email }, { username: user }],
       });
       expect(hashPassword).not.toHaveBeenCalled();
     });
@@ -59,16 +61,16 @@ describe("AuthService", () => {
       (generateToken as jest.Mock).mockReturnValue(mockToken);
 
       const result = await AuthService.login(
-        "testuser@example.com",
-        "password123"
+        mail,
+        password
       );
 
       expect(UserModel.findOne).toHaveBeenCalledWith({
-        email: "testuser@example.com",
+        email: mail
       });
       expect(comparePassword).toHaveBeenCalledWith(
-        "password123",
-        "hashedpassword"
+        password,
+        hashedpassword
       );
       expect(generateToken).toHaveBeenCalledWith(mockUserForLogin._id);
       expect(result).toEqual({ token: mockToken });
@@ -78,11 +80,11 @@ describe("AuthService", () => {
       (UserModel.findOne as jest.Mock).mockResolvedValue(null);
 
       await expect(
-        AuthService.login("nonexistentuser@example.com", "password123")
+        AuthService.login(nonexistentuser, password)
       ).rejects.toThrow(ERROR_MESSAGES.UNAUTHORIZED);
 
       expect(UserModel.findOne).toHaveBeenCalledWith({
-        email: "nonexistentuser@example.com",
+        email: nonexistentuser,
       });
       expect(comparePassword).not.toHaveBeenCalled();
     });
@@ -93,12 +95,12 @@ describe("AuthService", () => {
       (comparePassword as jest.Mock).mockResolvedValue(false);
 
       await expect(
-        AuthService.login("testuser@example.com", "wrongpassword")
+        AuthService.login(mail, wrongpassword)
       ).rejects.toThrow(ERROR_MESSAGES.UNAUTHORIZED);
 
       expect(comparePassword).toHaveBeenCalledWith(
-        "wrongpassword",
-        "hashedpassword"
+        wrongpassword,
+        hashedpassword
       );
     });
   });

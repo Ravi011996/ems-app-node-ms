@@ -1,11 +1,26 @@
 import { Request, Response } from 'express';
 import AuthController from '../controllers/authController';
-import { HTTP_STATUS_CODES, SUCCESS_MESSAGES } from "../constants";
+import { HTTP_STATUS_CODES, SUCCESS_MESSAGES } from '../constants';
 import { AuthService } from '../services/index';
+import {
+  mockExistingUser,
+  mockNewUser,
+  mockToken,
+  mockUserForLogin,
+  testUser,
+} from '../mocks/index';
 
 jest.mock('../services/index');
 
 describe('AuthController', () => {
+  const {
+    hashedpassword,
+    user,
+    mail,
+    password,
+    nonexistentuser,
+    wrongpassword,
+  } = testUser;
   let req: Partial<Request>;
   let res: Partial<Response>;
 
@@ -23,22 +38,18 @@ describe('AuthController', () => {
 
   describe('register', () => {
     it('should register a new user and return 201 status', async () => {
-      const mockUserData = { email: 'test@example.com', username: 'testUser' };
+      const mockUserData = { email: mail, username: user };
       req.body = {
-        username: 'testUser',
-        password: 'password123',
-        email: 'test@example.com',
+        username: user,
+        password: password,
+        email: mail,
       };
 
       (AuthService.register as jest.Mock).mockResolvedValue(mockUserData);
 
       await AuthController.register(req as Request, res as Response);
 
-      expect(AuthService.register).toHaveBeenCalledWith(
-        'testUser',
-        'test@example.com',
-        'password123'
-      );
+      expect(AuthService.register).toHaveBeenCalledWith(user, mail, password);
       expect(res.status).toHaveBeenCalledWith(HTTP_STATUS_CODES.CREATED);
       expect(res.json).toHaveBeenCalledWith({
         error: false,
@@ -49,20 +60,18 @@ describe('AuthController', () => {
 
     it('should return 400 if registration fails', async () => {
       req.body = {
-        username: 'testUser',
-        password: 'password123',
-        email: 'test@example.com',
+        username: user,
+        password: password,
+        email: mail,
       };
 
-      (AuthService.register as jest.Mock).mockRejectedValue(new Error('User already exists'));
+      (AuthService.register as jest.Mock).mockRejectedValue(
+        new Error('User already exists')
+      );
 
       await AuthController.register(req as Request, res as Response);
 
-      expect(AuthService.register).toHaveBeenCalledWith(
-        'testUser',
-        'test@example.com',
-        'password123'
-      );
+      expect(AuthService.register).toHaveBeenCalledWith(user, mail, password);
       expect(res.status).toHaveBeenCalledWith(HTTP_STATUS_CODES.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         error: true,
@@ -74,16 +83,10 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should return a token on successful login', async () => {
       const mockTokenData = { token: 'mockToken' };
-      req.body = {
-        email: 'test@example.com',
-        password: 'password123',
-      };
-
+      req.body = { email: mail, password };
       (AuthService.login as jest.Mock).mockResolvedValue(mockTokenData);
-
       await AuthController.login(req as Request, res as Response);
-
-      expect(AuthService.login).toHaveBeenCalledWith('test@example.com', 'password123');
+      expect(AuthService.login).toHaveBeenCalledWith(mail, password);
       expect(res.status).toHaveBeenCalledWith(HTTP_STATUS_CODES.OK);
       expect(res.json).toHaveBeenCalledWith({
         error: false,
@@ -94,15 +97,20 @@ describe('AuthController', () => {
 
     it('should return 401 if login fails', async () => {
       req.body = {
-        email: 'test@example.com',
-        password: 'wrongPassword',
+        email: mail,
+        password: wrongpassword,
       };
 
-      (AuthService.login as jest.Mock).mockRejectedValue(new Error('Invalid credentials'));
+      (AuthService.login as jest.Mock).mockRejectedValue(
+        new Error('Invalid credentials')
+      );
 
       await AuthController.login(req as Request, res as Response);
 
-      expect(AuthService.login).toHaveBeenCalledWith('test@example.com', 'wrongPassword');
+      expect(AuthService.login).toHaveBeenCalledWith(
+        mail,
+        wrongpassword
+      );
       expect(res.status).toHaveBeenCalledWith(HTTP_STATUS_CODES.UNAUTHORIZED);
       expect(res.json).toHaveBeenCalledWith({
         error: true,

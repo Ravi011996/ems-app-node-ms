@@ -1,8 +1,12 @@
-import { mockExistingUser, mockNewUser, mockToken, mockUserForLogin } from "./authServiceMocks";
+import { mockExistingUser, mockNewUser, mockToken, mockUserForLogin,testUser} from "./authMocksData";
+import { mockExpenseData } from "./expenseMockData";
+
 
 export {
     mockNewUser,
     mockExistingUser,
     mockUserForLogin,
-    mockToken
+    mockToken,
+    testUser,
+    mockExpenseData
   };

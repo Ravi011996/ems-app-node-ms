@@ -16,4 +16,13 @@ export const mockNewUser = {
   };
   
   export const mockToken = "mocked-token";
+
+  export const testUser = {
+    user : 'testuser',
+    mail : 'testuser@example.com',
+    password : "password123",
+    nonexistentuser : 'nonexistentuser',
+    wrongpassword : 'wrongpassword',
+    hashedpassword : 'hashedpassword'
+};
   
