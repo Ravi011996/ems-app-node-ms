@@ -1,6 +1,6 @@
-import { UserModel } from "../models/index";
-import { ERROR_MESSAGES } from "../constants/common";
-import { hashPassword, comparePassword, generateToken } from "../utils/index";
+import { UserModel } from '../models/index';
+import { ERROR_MESSAGES } from '../constants/common';
+import { hashPassword, comparePassword, generateToken } from '../utils/index';
 
 class AuthService {
   public async register(username: string, email: string, password: string) {
@@ -23,7 +23,6 @@ class AuthService {
 
   public async login(email: string, password: string) {
     const user = await UserModel.findOne({ email });
-
     if (!user) {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED);
     }
@@ -34,7 +33,6 @@ class AuthService {
     }
 
     const token = generateToken(`${user._id}`);
-
     return { token };
   }
 }

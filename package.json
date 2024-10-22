@@ -7,8 +7,7 @@
     "start": "ts-node ./src/server.ts",
     "dev": " npx tsc && nodemon ./src/server.ts",
     "test": "jest",
-    "coverage": "jest --coverage",
-    "lint": "eslint . --fix"
+    "coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",

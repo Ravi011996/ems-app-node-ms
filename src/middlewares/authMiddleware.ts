@@ -7,7 +7,6 @@ export const authenticate = (
   next: NextFunction
 ): void => {
   const token = req.header("Authorization")?.split(" ")[1];
-
   if (!token) {
      res.status(401).json({ message: "No token, authorization denied" });
   }else{
@@ -15,7 +14,6 @@ export const authenticate = (
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
         userId: string;
       };
-
       req.body.userId = decoded.userId;
       next();
     } catch (err) {

@@ -16,7 +16,6 @@ router.post(
 );
 
 router.put("/expenses/:id", authenticate, ExpenseController.updateExpense);
-
 router.delete("/expenses/:id", authenticate, ExpenseController.deleteExpense);
 
 export default router;

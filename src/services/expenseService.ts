@@ -6,8 +6,7 @@ import { IExpense } from "../types/common";
 class ExpenseService {
   public async getExpenses(userId: string): Promise<IExpense[]> {
     try {
-      const expenses = await Expense.find({ userId });
-      return expenses;
+      return await Expense.find({ userId });
     } catch (error) {
       throw new Error(ERROR_MESSAGES.SERVER_ERROR);
     }
@@ -23,8 +22,7 @@ class ExpenseService {
         date,
         userId,
       });
-      const expense = await newExpense.save();
-      return expense;
+      return await newExpense.save();
     } catch (error) {
       throw new Error(ERROR_MESSAGES.SERVER_ERROR);
     }
@@ -47,9 +45,7 @@ class ExpenseService {
       expense.amount = amount || expense.amount;
       expense.category = category || expense.category;
       expense.date = date || expense.date;
-
-      const updatedExpense = await expense.save();
-      return updatedExpense;
+      return await expense.save();
     } catch (error) {
       throw new Error((error as Error).message || ERROR_MESSAGES.SERVER_ERROR);
     }
@@ -58,7 +54,6 @@ class ExpenseService {
   public async deleteExpense(id: string, userId: string):  Promise<{ message: string }> {
     try {
       const expense = await Expense.findById(id);
-
       if (!expense) {
         throw new Error(ERROR_MESSAGES.NOT_FOUND);
       }
@@ -66,7 +61,6 @@ class ExpenseService {
       if (expense.userId !== userId) {
         throw new Error(ERROR_MESSAGES.UNAUTHORIZED);
       }
-
       await expense.deleteOne();
       return { message: SUCCESS_MESSAGES.DELETED };
     } catch (error) {

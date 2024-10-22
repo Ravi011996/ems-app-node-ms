@@ -1,8 +1,8 @@
 export default [
     {
-      files: ['**/*.js', '**/*.ts'], // Add the extensions here
+      files: ['src/**/*.ts'], 
       rules: {
-        // Your ESLint rules
+  
       }
     }
   ];

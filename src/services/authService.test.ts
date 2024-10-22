@@ -10,7 +10,7 @@ import {
 } from "../utils/index";
 
 jest.mock("../models/auth");
-jest.mock("../utils/authUtils");
+jest.mock("../utils/auth");
 
 describe("AuthService", () => {
   const {hashedpassword,user,mail,password,nonexistentuser,wrongpassword} = testUser;

@@ -13,7 +13,7 @@ jest.mock("../services", () => ({
   },
 }));
 
-jest.mock("../utils/responseUtil", () => ({
+jest.mock("../utils/response", () => ({
   sendResponse: jest.fn(),
 }));
 
