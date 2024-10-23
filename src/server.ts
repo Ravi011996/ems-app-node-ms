@@ -4,13 +4,13 @@ import connectDB from './config/db';
 import { authRoute, expenseRoute } from './routes/index';
 import globalErrorHandler from './middlewares/errorHandlerMiddleware';
 import { setupSwagger } from './swagger';
+const cors = require('cors');
+
 
 dotenv.config();
-
 const app = express();
-
+app.use(cors());
 app.use(express.json());
-
 setupSwagger(app);
 
 app.use('/api/auth', authRoute);

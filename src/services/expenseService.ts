@@ -37,7 +37,7 @@ class ExpenseService {
         throw new Error(ERROR_MESSAGES.NOT_FOUND);
       }
 
-      if (expense.userId !== userId) {
+      if (expense.userId.toString() !== userId.toString()) {
         throw new Error(ERROR_MESSAGES.UNAUTHORIZED);
       }
 
@@ -57,8 +57,7 @@ class ExpenseService {
       if (!expense) {
         throw new Error(ERROR_MESSAGES.NOT_FOUND);
       }
-
-      if (expense.userId !== userId) {
+      if (expense.userId.toString() !== userId.toString()) {
         throw new Error(ERROR_MESSAGES.UNAUTHORIZED);
       }
       await expense.deleteOne();
