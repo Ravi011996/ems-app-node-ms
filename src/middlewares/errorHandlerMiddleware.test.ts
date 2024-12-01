@@ -1,12 +1,8 @@
-// error-handler.test.ts
-
 import { Request, Response, NextFunction } from 'express';
 import globalErrorHandler from './errorHandlerMiddleware';
-
-// Mock the Request, Response, and NextFunction objects
 const mockRequest = {} as Request;
 const mockResponse = {} as Response;
-mockResponse.status = jest.fn().mockReturnThis(); // Mock method chaining
+mockResponse.status = jest.fn().mockReturnThis();
 mockResponse.json = jest.fn();
 const mockNext = jest.fn() as NextFunction;
 
@@ -46,7 +42,7 @@ describe('globalErrorHandler', () => {
 
   it('should hide the stack trace in production', () => {
     const error = new Error('Server Error') as any;
-    process.env.NODE_ENV = 'production'; // Simulate production environment
+    process.env.NODE_ENV = 'production';
 
     globalErrorHandler(error, mockRequest, mockResponse, mockNext);
 
@@ -57,6 +53,6 @@ describe('globalErrorHandler', () => {
       stack: null,
     });
 
-    process.env.NODE_ENV = 'test'; // Reset to test environment
+    process.env.NODE_ENV = 'test';
   });
 });

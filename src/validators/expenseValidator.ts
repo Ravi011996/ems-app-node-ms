@@ -1,5 +1,3 @@
-// validators/itemValidator.ts
-
 import { body } from 'express-validator';
 
 export const expenseValidator = [
